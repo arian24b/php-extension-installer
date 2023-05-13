@@ -1,43 +1,53 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+########################################################################
+## Scipts: sourcegurdian installer                                    ##
+## Code By: Arian Omrani                                              ##
+## Repository: https://github.com/arianomrani/php-extension-installer ##
+########################################################################
+
+
+echo "Welcome to SourceGurdian Installer"
 
 clear
 echo "###############################################################################"
 
 # Show an error and exit
 abort() {
+  echo -e "\E[0m\E[01;31m\033[5mPlease check log and run scripts with -x.\E[0m"
   echo -e "\E[0m\E[01;31m\033[5m$1\E[0m"
   exit 1
 }
 
+#dot vertion to no dot version (7.4 => 74)
 PHP_VERTION=$1
-
-#dot vertion to no dot version (7.4 => 74) 
 A=${PHP_VERTION//\./}
 PHP_VERTION_NO_DOT="${A[@]}"
 
+EXTENSION_INI=/usr/local/php$PHP_VERTION_NO_DOT/lib/php.conf.d/extensions.ini
 PHP_INI=/usr/local/php$PHP_VERTION_NO_DOT/lib/php.ini
 DIRECTADMIN_INI=/usr/local/php$PHP_VERTION_NO_DOT/lib/php.conf.d/10-directadmin.ini
+WEBAPPS_INI=/usr/local/php$PHP_VERTION_NO_DOT/lib/php.conf.d/50-webapps.ini
 
-SOURCE_GUARDIAN_FILE_NAME=SourceGuardian-loaders.linux-x86_64-13.0.3.zip
+SOURCE_GUARDIAN_FILE_NAME=SourceGuardian-loaders.linux-x86_64-14.0.2.zip
+SOURCE_GUARDIAN_FILE_URL=https://bash-files.s3.ir-thr-at1.arvanstorage.ir/$SOURCE_GUARDIAN_FILE_NAME
 
-#remove extension from ini files
-sed -i -r '/extension=ixed/d' $PHP_INI 
-sed -i -r '/extension=ixed/d' $DIRECTADMIN_INI
-
-#check extension in ini file
-if [[ ! "$(grep -P "ixed.\d+\.\d+.lin"  $PHP_INI)" ]] || [[ ! "$(grep -P "ixed.\d+\.\d+.lin"  $DIRECTADMIN_INI)" ]]; then
-  #echo "add extension=ixed.$PHP_VERTION_NO_DOT.lin to php.ini"
-  echo extension=ixed.$PHP_VERTION.lin >> $DIRECTADMIN_INI
-fi
-
-cd /usr/local/php$PHP_VERTION_NO_DOT/lib/php/extensions/no-debug-non-zts-*/
+TMPDIR=$(mktemp -d)
+SG_PATH=/usr/local/lib/sourcegurdian
+mkdir -p $SG_PATH
 
 #download sourcegurdian file and extraxt it
-#echo "download and extraxt sourcegurdian files"
-wget https://bash-files.s3.ir-thr-at1.arvanstorage.ir/$SOURCE_GUARDIAN_FILE_NAME >/dev/null 2>&1
-unzip -o $SOURCE_GUARDIAN_FILE_NAME >/dev/null 2>&1
+echo "Wownload and extraxt SourceGurdian files to $SG_PATH"
+wget --tries=0 --retry-connrefused --show-progress --timeout=180 -x --no-cache --no-check-certificate $SOURCE_GUARDIAN_FILE_URL -O $TMPDIR >/dev/null 2>&1
+unzip -o $SOURCE_GUARDIAN_FILE_NAME -d $SG_PATH >/dev/null 2>&1
 
-/usr/local/directadmin/custombuild/build set ioncube yes
-/usr/local/directadmin/custombuild/build ioncube
+#remove extension from ini files
+sed -i -r '/extension=ixed/d' $EXTENSION_INI $PHP_INI $DIRECTADMIN_INI $WEBAPPS_INI
+
+#check and add extension in ini files
+if [[ ! "$(grep -P "ixed.\d+\.\d+.lin"  $EXTENSION_INI $PHP_INI $DIRECTADMIN_INI $WEBAPPS_INI)" ]]; then
+  INI=$DIRECTADMIN_INI
+  echo "add extension=$SG_PATH/ixed.$PHP_VERTION.lin to $INI"
+  echo extension=$SG_PATH/ixed.$PHP_VERTION.lin >> $INI
+fi
 
 echo "done, restart handler and webserver"
