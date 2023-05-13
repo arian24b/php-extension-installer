@@ -9,7 +9,7 @@
 clear
 
 echo "Welcome to SourceGurdian Installer"
-echo "###############################################################################"
+echo -e "\E[0m\E[01;31m\033[5m###############################################################################\E[0m"
 
 # Show an error and exit
 abort() {
@@ -33,7 +33,9 @@ SOURCE_GUARDIAN_FILE_URL=https://github.com/arianomrani/php-extension-installer/
 
 TMPDIR=$(mktemp -d)
 SG_PATH=/usr/local/lib/sourcegurdian
+
 mkdir -p $SG_PATH
+touch $EXTENSION_INI
 
 #download sourcegurdian file and extraxt it
 echo "Download and extraxt SourceGurdian files to $SG_PATH"
@@ -46,9 +48,10 @@ sed -i -r '/extension=ixed/d' $EXTENSION_INI $PHP_INI $DIRECTADMIN_INI $WEBAPPS_
 
 #check and add extension in ini files
 if [[ ! "$(grep -P "ixed.\d+\.\d+.lin"  $EXTENSION_INI $PHP_INI $DIRECTADMIN_INI $WEBAPPS_INI)" ]]; then
-  INI=$DIRECTADMIN_INI
+  INI=$EXTENSION_INI
   echo "add extension=$SG_PATH/ixed.$PHP_VERTION.lin to $INI"
   echo extension=$SG_PATH/ixed.$PHP_VERTION.lin >> $INI
 fi
 
 echo "done, restart handler and webserver"
+echo -e "\E[0m\E[01;31m\033[5m###############################################################################\E[0m"
