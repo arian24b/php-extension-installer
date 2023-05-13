@@ -6,9 +6,9 @@
 ########################################################################
 
 
-echo "Welcome to SourceGurdian Installer"
-
 clear
+
+echo "Welcome to SourceGurdian Installer"
 echo "###############################################################################"
 
 # Show an error and exit
@@ -36,9 +36,10 @@ SG_PATH=/usr/local/lib/sourcegurdian
 mkdir -p $SG_PATH
 
 #download sourcegurdian file and extraxt it
-echo "Wownload and extraxt SourceGurdian files to $SG_PATH"
-wget --tries=0 --retry-connrefused --show-progress --timeout=180 -x --no-cache --no-check-certificate $SOURCE_GUARDIAN_FILE_URL -O $TMPDIR >/dev/null 2>&1
-unzip -o $SOURCE_GUARDIAN_FILE_NAME -d $SG_PATH >/dev/null 2>&1
+echo "Download and extraxt SourceGurdian files to $SG_PATH"
+wget --tries=0 --retry-connrefused --show-progress --timeout=180 -x --no-cache --no-check-certificate $SOURCE_GUARDIAN_FILE_URL -O $TMPDIR/$SOURCE_GUARDIAN_FILE_NAME >/dev/null 2>&1
+unzip -o $TMPDIR/$SOURCE_GUARDIAN_FILE_NAME -d $SG_PATH >/dev/null 2>&1
+rm -rf $TMPDIR
 
 #remove extension from ini files
 sed -i -r '/extension=ixed/d' $EXTENSION_INI $PHP_INI $DIRECTADMIN_INI $WEBAPPS_INI
