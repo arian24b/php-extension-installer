@@ -29,7 +29,7 @@ DIRECTADMIN_INI=/usr/local/php$PHP_VERTION_NO_DOT/lib/php.conf.d/10-directadmin.
 WEBAPPS_INI=/usr/local/php$PHP_VERTION_NO_DOT/lib/php.conf.d/50-webapps.ini
 
 SOURCE_GUARDIAN_FILE_NAME=SourceGuardian-loaders.linux-x86_64-14.0.2.zip
-SOURCE_GUARDIAN_FILE_URL=https://bash-files.s3.ir-thr-at1.arvanstorage.ir/$SOURCE_GUARDIAN_FILE_NAME
+SOURCE_GUARDIAN_FILE_URL=https://github.com/arianomrani/php-extension-installer/raw/main/files/$SOURCE_GUARDIAN_FILE_NAME
 
 TMPDIR=$(mktemp -d)
 SG_PATH=/usr/local/lib/sourcegurdian
