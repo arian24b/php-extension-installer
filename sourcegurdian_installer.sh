@@ -5,7 +5,6 @@
 ## Repository: https://github.com/arianomrani/php-extension-installer ##
 ########################################################################
 
-
 clear
 
 echo "Welcome to SourceGurdian Installer"
@@ -35,9 +34,10 @@ TMPDIR=$(mktemp -d)
 SG_PATH=/usr/local/lib/sourcegurdian
 
 mkdir -p $SG_PATH
+rm -f $SG_PATH/*
 touch $EXTENSION_INI
 
-#download sourcegurdian file and extraxt it
+#download sourcegurdian file and extraxt
 echo "Download and extraxt SourceGurdian files to $SG_PATH"
 wget --tries=0 --retry-connrefused --show-progress --timeout=180 -x --no-cache --no-check-certificate $SOURCE_GUARDIAN_FILE_URL -O $TMPDIR/$SOURCE_GUARDIAN_FILE_NAME >/dev/null 2>&1
 unzip -o $TMPDIR/$SOURCE_GUARDIAN_FILE_NAME -d $SG_PATH >/dev/null 2>&1
