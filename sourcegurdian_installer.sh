@@ -28,7 +28,7 @@ rm -f $SG_PATH/*
 
 #download sourcegurdian file and extraxt
 echo "Download and extraxt SourceGurdian files to $SG_PATH"
-wget --tries=0 --retry-connrefused --show-progress --timeout=180 -x --no-cache --no-check-certificate $SOURCE_GUARDIAN_FILE_URL -O $TMPDIR/$SOURCE_GUARDIAN_FILE_NAME >/dev/null 2>&1
+wget --tries=0 --retry-connrefused --timeout=180 -x --no-cache --no-check-certificate -O $TMPDIR/$SOURCE_GUARDIAN_FILE_NAME $SOURCE_GUARDIAN_FILE_URL >/dev/null 2>&1
 unzip -o $TMPDIR/$SOURCE_GUARDIAN_FILE_NAME -d $SG_PATH >/dev/null 2>&1
 rm -rf $TMPDIR
 
@@ -44,16 +44,16 @@ do
   DIRECTADMIN_INI=/usr/local/php$PHP_VERTION_NO_DOT/lib/php.conf.d/10-directadmin.ini
   WEBAPPS_INI=/usr/local/php$PHP_VERTION_NO_DOT/lib/php.conf.d/50-webapps.ini
 
-  touch $EXTENSION_INI
+  touch $EXTENSION_INI $PHP_INI $DIRECTADMIN_INI $WEBAPPS_INI
 
   #remove extension from ini files
-  sed -i -r '/extension=ixed/d' $EXTENSION_INI $PHP_INI $DIRECTADMIN_INI $WEBAPPS_INI
+  sed -i -r '/ixed/d' $EXTENSION_INI $PHP_INI $DIRECTADMIN_INI $WEBAPPS_INI >/dev/null 2>&1
 
   #check and add extension in ini files
-  if [[ ! "$(grep -P "ixed.\d+\.\d+.lin"  $EXTENSION_INI $PHP_INI $DIRECTADMIN_INI $WEBAPPS_INI)" ]]; then
+  if [[ ! "$(grep -P "ixed.\d+\.\d+.lin"  $EXTENSION_INI $PHP_INI $DIRECTADMIN_INI $WEBAPPS_INI >/dev/null 2>&1)" ]]; then
     INI=$EXTENSION_INI
-    echo "add extension=$SG_PATH/ixed.$PHP_VERTION.lin to $INI"
-    echo extension=$SG_PATH/ixed.$PHP_VERTION.lin >> $INI
+    echo "Add extension=$SG_PATH/ixed.$PHP_VERTION.lin to $INI"
+    echo "extension=$SG_PATH/ixed.$PHP_VERTION.lin" >> $INI
   fi
 done
 
