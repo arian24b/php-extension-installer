@@ -32,7 +32,8 @@ wget --tries=0 --retry-connrefused --show-progress --timeout=180 -x --no-cache -
 unzip -o $TMPDIR/$SOURCE_GUARDIAN_FILE_NAME -d $SG_PATH >/dev/null 2>&1
 rm -rf $TMPDIR
 
-for PHP_VERTION in $(grep -e php[1234]_release /usr/local/directadmin/custombuild/options.conf | cut -d "=" -f "2" | grep -v no) do
+for PHP_VERTION in $(grep -e php[1234]_release /usr/local/directadmin/custombuild/options.conf | cut -d "=" -f "2" | grep -v no)
+do
   #dot vertion to no dot version (7.4 => 74)
   #PHP_VERTION=$1
   A=${PHP_VERTION//\./}
