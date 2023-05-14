@@ -9,11 +9,10 @@ abort() {
   exit 1
 }
 
-for PV in $(grep -e php[1234]_release /usr/local/directadmin/custombuild/options.conf | cut -d "=" -f "2")
-do
+for PV in $(grep -e php[1234]_release /usr/local/directadmin/custombuild/options.conf | cut -d "=" -f "2" | grep -v no) do
     PHP_VERTION=$PV
 
-    #dot vertion to no dot version (7.4 => 74) 
+    #dot vertion to no dot version (7.4 => 74)
     A=(${PHP_VERTION//\./})
     PHP_VERTION_NO_DOT="${A[@]}"
 
@@ -23,7 +22,7 @@ do
     SOURCE_GUARDIAN_FILE_NAME=SourceGuardian-loaders.linux-x86_64-13.0.3.zip
 
     #remove extension from ini files
-    sed -i -r '/extension=ixed/d' $PHP_INI 
+    sed -i -r '/extension=ixed/d' $PHP_INI
     sed -i -r '/extension=ixed/d' $DIRECTADMIN_INI
 
     #check extension in ini file
