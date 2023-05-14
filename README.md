@@ -1,16 +1,19 @@
-# sg-installer
-### SourceGurdian-installer
+# php-extension-installer
 
-Easy install SourceGurdian in DirectAdmin
+Easy install SourceGurdian and IonCube in server
 
-## Usage
+### Usage
 
 for use just copy and paste this line
 
-```
-sh <(curl -s https://raw.githubusercontent.com/arianomrani/sg-installer/main/sourcegurdian_installer.sh) <php vertion>
-```
+## SourceGurdian installer
 
 ```
-sh <(curl -s https://raw.githubusercontent.com/arianomrani/sg-installer/main/sourcegurdian_installer.sh) 7.4
+bash <(curl -sSkL https://raw.githubusercontent.com/arianomrani/php-extension-installer/main/sourcegurdian_installer.sh)
+```
+
+## IonCube installer
+
+```
+bash <(curl -sSkL https://raw.githubusercontent.com/arianomrani/php-extension-installer/main/ioncube_installer.sh)
 ```
