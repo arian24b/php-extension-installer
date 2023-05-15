@@ -9,11 +9,11 @@ for use just copy and paste this line
 ## SourceGurdian installer
 
 ```
-bash <(curl -sSkL https://raw.githubusercontent.com/arianomrani/php-extension-installer/main/sourcegurdian_installer.sh)
+bash <(curl -sSkL https://raw.githubusercontent.com/arian24b/php-extension-installer/main/sourcegurdian_installer.sh)
 ```
 
 ## IonCube installer
 
 ```
-bash <(curl -sSkL https://raw.githubusercontent.com/arianomrani/php-extension-installer/main/ioncube_installer.sh)
+bash <(curl -sSkL https://raw.githubusercontent.com/arian24b/php-extension-installer/main/ioncube_installer.sh)
 ```
