@@ -69,20 +69,25 @@ unzip -o $TMPDIR/$SOURCE_GUARDIAN_FILE_NAME -d $TMPDIR >/dev/null 2>&1
 
 for PHP_VERTION in $(ls -1 /etc/php/)
 do
-  mv $TMPDIR/ixed.$PHP_VERTION.lin $(find_extension_dir $PHP_VERTION)
-
+  EXTENSION_DIR=$(find_extension_dir $PHP_VERTION)
+  EXTENSION_NAME=ixed.$PHP_VERTION.lin
   PHP_CLI_INI=/etc/php/$PHP_VERTION/cli/php.ini
   PHP_FPM_INI=/etc/php/$PHP_VERTION/fpm/php.ini
+
+  rm -f $EXTENSION_DIR/$EXTENSION_NAME
+
+  mv $TMPDIR/$EXTENSION_NAME $EXTENSION_DIR
 
   #remove extension from ini files
   sed -i -r '/ixed\.[0-9]+\.[0-9]+\.lin/d' $PHP_CLI_INI $PHP_FPM_INI >/dev/null 2>&1
 
   #check and add extension in ini files
-  if [[ -f $(find_extension_dir $PHP_VERTION)/ixed.$PHP_VERTION.lin ]]; then
-    green_msg "Add extension=ixed.$PHP_VERTION.lin to $PHP_CLI_INI"
-    echo "extension=ixed.$PHP_VERTION.lin" >> $PHP_CLI_INI
-    green_msg "Add extension=ixed.$PHP_VERTION.lin to $PHP_FPM_INI"
-    echo "extension=ixed.$PHP_VERTION.lin" >> $PHP_FPM_INI
+  if [[ -f $EXTENSION_DIR/$EXTENSION_NAME ]]; then
+    for PHP_INI in $PHP_CLI_INI $PHP_FPM_INI
+    do
+    green_msg "extension=$EXTENSION_NAME adding to $PHP_INI"
+    echo "extension=$EXTENSION_NAME" >> $PHP_INI
+    done
   fi
 done
 

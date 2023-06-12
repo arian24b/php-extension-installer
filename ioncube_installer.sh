@@ -1,36 +1,71 @@
 #!/usr/bin/env bash
+
 ########################################################################
-## Scipts: IonCube installer                                          ##
+## Scipts: IonCube installer on CloudPanel                            ##
 ## Code By: Arian Omrani                                              ##
 ## Repository: https://github.com/arian24b/php-extension-installer    ##
 ########################################################################
 
-clear
+# Red, Green & Yellow Messages.
+red_msg() {
+  tput setaf 1
+  echo "[*] ----- $1"
+  tput sgr0
+}
 
-echo "Welcome to IonCube Installer"
-echo -e "\E[0m\E[01;31m\033[5m###############################################################################\E[0m"
+green_msg() {
+  tput setaf 2
+  echo "[*] ----- $1"
+  tput sgr0
+}
+
+yellow_msg() {
+  tput setaf 3
+  echo "[*] ----- $1"
+  tput sgr0
+}
 
 # Show an error and exit
 abort() {
-  echo -e "\E[0m\E[01;31m\033[5mPlease check log and run scripts with -x.\E[0m"
-  echo -e "\E[0m\E[01;31m\033[5m$1\E[0m"
-  exit 1
+  red_msg "Please check log and run scripts with -x for Debug."
+  red_msg "$1"
+  exit 2
 }
 
+# Check if running as root or not!
+if [[ $EUID -ne 0 ]]; then
+  clear
+  abort "This script needs to be run with superuser privileges.";
+fi
+
+# Remove dot in number (7.4 => 74)
+remove_dot() {
+  # Get 7.4 and echo 74
+  # Use this:
+  #   PHP_VERTION_NO_DOT=$(remove_dot $PHP_VERTION)
+  A=$1
+  B=${A//\./}
+  echo "${b[@]}"
+}
+
+find_extension_dir() {
+  echo $(php$1 -i | grep "extension_dir => /" | cut -d " " -f 5)
+}
+
+# Declare Paths & Settings.
 IONCUBE_FILE_NAME=ioncube_loaders_lin_x86-64.zip
 IONCUBE_FILE_URL=https://downloads.ioncube.com/loader_downloads/$IONCUBE_FILE_NAME
-
 TMPDIR=$(mktemp -d)
-IC_PATH=/usr/local/lib
 
-mkdir -p $IC_PATH
-rm -rf $IC_PATH/ioncube
+clear
 
-#download ioncube file and extraxt
-echo "Download and extraxt IonCube files to $IC_PATH/ioncube"
+green_msg "Welcome to IonCube Installer on directadmin."
+yellow_msg "###############################################################################"
+
+# Download and extraxt files
+green_msg "Download and extraxt IonCube files to $TMPDIR"
 wget --tries=0 --retry-connrefused --timeout=180 -x --no-cache --no-check-certificate $IONCUBE_FILE_URL -O $TMPDIR/$IONCUBE_FILE_NAME >/dev/null 2>&1
-unzip -o $TMPDIR/$IONCUBE_FILE_NAME -d $IC_PATH >/dev/null 2>&1
-rm -rf $TMPDIR
+unzip -o $TMPDIR/$IONCUBE_FILE_NAME -d $TMPDIR >/dev/null 2>&1
 
 for PHP_VERTION in $(grep -e php[1234]_release /usr/local/directadmin/custombuild/options.conf | cut -d "=" -f "2" | grep -v no)
 do
@@ -57,5 +92,5 @@ do
   fi
 done
 
-echo "done, restart handler and webserver"
-echo -e "\E[0m\E[01;31m\033[5m###############################################################################\E[0m"
+yellow_msg "###############################################################################"
+green_msg "Installation done, restart PHP Handler and WebServer"
