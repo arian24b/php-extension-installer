@@ -2,7 +2,7 @@
 ########################################################################
 ## Scipts: sourcegurdian installer                                    ##
 ## Code By: Arian Omrani                                              ##
-## Repository: https://github.com/arian24b/php-extension-installer ##
+## Repository: https://github.com/arian24b/php-extension-installer    ##
 ########################################################################
 
 clear
