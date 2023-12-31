@@ -53,8 +53,8 @@ find_extension_dir() {
 }
 
 # Declare Paths & Settings.
-SOURCE_GUARDIAN_FILE_NAME=SourceGuardian-loaders.linux-x86_64-14.0.2.zip
-SOURCE_GUARDIAN_FILE_URL=https://github.com/arian24b/php-extension-installer/raw/main/files/$SOURCE_GUARDIAN_FILE_NAME
+SOURCE_GUARDIAN_FILE_NAME=loaders.linux-x86_64.zip
+SOURCE_GUARDIAN_FILE_URL=https://www.sourceguardian.com/loaders/download/$SOURCE_GUARDIAN_FILE_NAME
 TMPDIR=$(mktemp -d)
 
 clear
@@ -64,7 +64,7 @@ yellow_msg "####################################################################
 
 # Download and extraxt files
 green_msg "Download and extraxt SourceGurdian files to $TMPDIR"
-wget --tries=0 --retry-connrefused --timeout=180 -x --no-cache --no-check-certificate -O $TMPDIR/$SOURCE_GUARDIAN_FILE_NAME $SOURCE_GUARDIAN_FILE_URL >/dev/null 2>&1
+curl -sSkL "$SOURCE_GUARDIAN_FILE_URL" -o "$TMPDIR/$SOURCE_GUARDIAN_FILE_NAME" >/dev/null 2>&1
 unzip -o $TMPDIR/$SOURCE_GUARDIAN_FILE_NAME -d $TMPDIR >/dev/null 2>&1
 
 for PHP_VERTION in $(ls -1 /etc/php/)
